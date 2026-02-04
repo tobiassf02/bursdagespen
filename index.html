@@ -184,20 +184,35 @@
       text-shadow:0 0 30px rgba(255,255,255,.15);
       transform:scale(.85);
       opacity:0;
-      animation:pop 2.2s ease-out forwards;
+      animation:pop 5.0s ease-out forwards;
     }
-    .revealSub{
-      margin-top:12px;
-      color:#e9edff;
-      opacity:.95;
-      font-size:clamp(1rem, 3.2vw, 1.2rem);
-    }
-    @keyframes pop{
-      0%{opacity:0; transform:scale(.7); filter:blur(8px)}
-      20%{opacity:1; filter:blur(0)}
-      65%{opacity:1; transform:scale(1.05)}
-      100%{opacity:0; transform:scale(1.18)}
-    }
+.revealSub{
+  margin-top:12px;
+  color:#e9edff;
+  opacity:0;
+  font-size:clamp(1rem, 3.2vw, 1.2rem);
+  transition:opacity 1.2s ease;
+}
+
+@keyframes pop{
+  0%{
+    opacity:0;
+    transform:scale(.85);
+  }
+  25%{
+    opacity:1;
+    transform:scale(1);
+  }
+  70%{
+    opacity:1;
+    transform:scale(1);
+  }
+  100%{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
 
     /* Konfetti */
     .confetti{
@@ -359,25 +374,26 @@
       }
     }
 
-    function showGiftReveal(){
-      // “Film”-sekvens + mer konfetti
-      reveal.classList.add("show");
+function showGiftReveal(){
+  reveal.classList.add("show");
 
-      // Kjør et par bølger konfetti
-      spawnConfetti(22, 2.6, 3.6);
-      setTimeout(()=>spawnConfetti(22, 2.4, 3.4), 350);
-      setTimeout(()=>spawnConfetti(22, 2.4, 3.2), 700);
+  revealText.textContent = "Gaven avsløres";
+  revealSub.textContent = "Norges nye landslagsdrakt til fotball-VM 🇳🇴";
+  revealSub.style.opacity = 0;
 
-      // Endre teksten litt for mer “punch”
-      revealText.textContent = "Gaven avsløres";
-      revealSub.textContent = "Norges nye landslagsdrakt til fotball-VM 🇳🇴";
+  spawnConfetti(18, 3.0, 4.0);
 
-      // Skjul reveal etter litt
-      setTimeout(()=>{
-        reveal.classList.remove("show");
-        // Her kan du evt sende dem videre til en ny side eller vise ekstra info
-      }, 2600);
-    }
+  // Vis undertekst etter litt
+  setTimeout(() => {
+    revealSub.style.opacity = 1;
+  }, 2200);
+
+  // Skjul hele revealen etter god pause
+  setTimeout(() => {
+    reveal.classList.remove("show");
+  }, 5200);
+}
+
 
     prevBtn.addEventListener("click", ()=>{
       if(idx === 0) return;
