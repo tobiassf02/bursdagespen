@@ -5,24 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gratulerer!</title>
   <style>
-    :root{
-      --bg1:#071022;
-      --bg2:#02040a;
-      --text:#ffffff;
-      --muted:#cdd6ff;
-      --card:rgba(8,12,24,.78);
-      --stroke:rgba(255,255,255,.14);
+:root{
+  --bg1:#1b2a4a;      /* myk mørk blå */
+  --bg2:#0f172a;      /* dyp nattblå */
+  --text:#ffffff;
+  --muted:#dbe2ff;
+  --card:rgba(255,255,255,.08);
+  --stroke:rgba(255,255,255,.18);
 
-      --red:#e5162b;
-      --blue:#1d4ed8;
-      --gold:#ffd24a;
-    }
+  --red:#e11d48;      /* litt varmere rød */
+  --blue:#3b82f6;
+  --gold:#facc15;
+}
+
 
     *{box-sizing:border-box;margin:0;padding:0}
     body{
       min-height:100vh;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background: radial-gradient(circle at top, #203b7a 0%, var(--bg1) 40%, var(--bg2) 100%);
+      background:
+  radial-gradient(circle at top, #3b5ccc 0%, var(--bg1) 45%, var(--bg2) 100%);
       color:var(--text);
       overflow-x:hidden;
       display:flex;
@@ -38,8 +40,8 @@
       z-index:2;
     }
 
-    .card{
-      background:var(--card);
+      .card{
+  background:rgba(255,255,255,.10);
       border:1px solid var(--stroke);
       border-radius:22px;
       padding:18px;
