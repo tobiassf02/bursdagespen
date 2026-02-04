@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gratulerer!</title>
+  <style>
+    :root{
+      --bg1:#071022;
+      --bg2:#02040a;
+      --text:#ffffff;
+      --muted:#cdd6ff;
+      --card:rgba(8,12,24,.78);
+      --stroke:rgba(255,255,255,.14);
+
+      --red:#e5162b;
+      --blue:#1d4ed8;
+      --gold:#ffd24a;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: radial-gradient(circle at top, #203b7a 0%, var(--bg1) 40%, var(--bg2) 100%);
+      color:var(--text);
+      overflow-x:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:760px;
+      position:relative;
+      z-index:2;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--stroke);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 18px 60px rgba(0,0,0,.55);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+    }
+
+    .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+    }
+
+    .badge{
+      font-size:.78rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted);
+      opacity:.9;
+    }
+
+    .steps{
+      font-size:.85rem;
+      color:var(--muted);
+      opacity:.9;
+      white-space:nowrap;
+    }
+
+    h1{
+      font-size:clamp(1.4rem, 4vw, 2rem);
+      margin:6px 0 8px;
+      line-height:1.2;
+    }
+
+    .text{
+      font-size:clamp(.98rem, 2.6vw, 1.08rem);
+      line-height:1.5;
+      color:#eef1ff;
+    }
+
+    .imgbox{
+      margin-top:14px;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+    }
+    .imgbox img{
+      width:100%;
+      display:block;
+      height:auto;
+    }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      margin-top:14px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    button{
+      border:none;
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:700;
+      cursor:pointer;
+      font-size:.95rem;
+      transition:transform .12s ease, opacity .12s ease;
+    }
+    button:active{transform:scale(.98)}
+    .primary{
+      background:linear-gradient(90deg, var(--red), #ff4d6d);
+      color:#fff;
+      box-shadow:0 10px 22px rgba(0,0,0,.35);
+    }
+    .ghost{
+      background:rgba(255,255,255,.10);
+      color:#fff;
+    }
+    .disabled{
+      opacity:.5;
+      pointer-events:none;
+    }
+
+    /* Start-overlay */
+    .start{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:radial-gradient(circle at top, #10184a 0%, #04050e 70%);
+      z-index:10;
+      padding:18px;
+    }
+    .startbox{
+      width:min(720px, 100%);
+      text-align:center;
+      background:rgba(8,12,24,.78);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:22px;
+      padding:22px 18px;
+      box-shadow:0 20px 70px rgba(0,0,0,.6);
+    }
+    .startbox h2{
+      font-size:clamp(1.4rem, 5vw, 2.1rem);
+      margin-bottom:8px;
+    }
+    .startbox p{
+      color:var(--muted);
+      line-height:1.5;
+      font-size:clamp(.95rem, 2.7vw, 1.05rem);
+      margin-bottom:14px;
+    }
+
+    /* Reveal overlay (film-aktig) */
+    .reveal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(2,4,10,.92);
+      backdrop-filter: blur(8px);
+      z-index:20;
+      text-align:center;
+      padding:18px;
+    }
+    .reveal.show{display:flex}
+    .revealText{
+      text-transform:uppercase;
+      font-weight:900;
+      letter-spacing:.14em;
+      line-height:1.05;
+      font-size:clamp(2rem, 10vw, 5rem);
+      color:#fff;
+      text-shadow:0 0 30px rgba(255,255,255,.15);
+      transform:scale(.85);
+      opacity:0;
+      animation:pop 2.2s ease-out forwards;
+    }
+    .revealSub{
+      margin-top:12px;
+      color:#e9edff;
+      opacity:.95;
+      font-size:clamp(1rem, 3.2vw, 1.2rem);
+    }
+    @keyframes pop{
+      0%{opacity:0; transform:scale(.7); filter:blur(8px)}
+      20%{opacity:1; filter:blur(0)}
+      65%{opacity:1; transform:scale(1.05)}
+      100%{opacity:0; transform:scale(1.18)}
+    }
+
+    /* Konfetti */
+    .confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:1;
+    }
+    .confetti i{
+      position:absolute;
+      top:-10vh;
+      width:6px;
+      height:12px;
+      border-radius:2px;
+      opacity:.9;
+      animation:fall linear infinite;
+      will-change:transform;
+    }
+    @keyframes fall{
+      0%{transform:translateY(-10vh) rotate(0deg)}
+      100%{transform:translateY(110vh) rotate(360deg)}
+    }
+
+    /* Mobil */
+    @media (max-width:520px){
+      .card{padding:16px}
+      .controls{justify-content:space-between}
+      button{flex:1}
+      .steps{font-size:.8rem}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Litt konfetti hele tiden (lett), mer kommer ved reveal -->
+  <div class="confetti" id="confetti"></div>
+
+  <!-- Start -->
+  <div class="start" id="start">
+    <div class="startbox">
+      <h2>Gratulerer med dagen! 🎉</h2>
+      <p>Trykk start når du er klar. Dette er en liten “mini-film” laget bare for deg.</p>
+      <button class="primary" id="startBtn">Start</button>
+    </div>
+  </div>
+
+  <!-- Film-reveal -->
+  <div class="reveal" id="reveal">
+    <div>
+      <div class="revealText" id="revealText">Gaven avsløres</div>
+      <div class="revealSub" id="revealSub">Norges nye landslagsdrakt til fotball-VM 🇳🇴</div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section class="card" id="card">
+      <div class="top">
+        <div class="badge">Bursdagshilsen</div>
+        <div class="steps" id="steps">1 / 4</div>
+      </div>
+
+      <h1 id="title">Gratulerer med 57-årsdagen! 🎉</h1>
+      <p class="text" id="text">
+        Du nærmer deg jo 60 med stormskritt, men det er heldigvis lite som avslører det – du er fortsatt sprek, energisk og i imponerende god form.
+      </p>
+
+      <div class="imgbox" id="imgbox">
+        <img id="img" src="img/01-espen-trening-1.jpg" alt="Bilde" />
+      </div>
+
+      <div class="controls">
+        <button class="ghost disabled" id="prevBtn">Tilbake</button>
+        <button class="primary" id="nextBtn">Neste</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Slides (rekkefølgen mamma ønsker)
+    const slides = [
+      {
+        title: "Gratulerer med 57-årsdagen! 🎉",
+        text:
+          "Du nærmer deg jo 60 med stormskritt, men det er heldigvis lite som avslører det – du er fortsatt sprek, energisk og i imponerende god form.",
+        img: "img/01-espen-trening-1.jpg"
+      },
+      {
+        title: "Sprek, fortsatt 💪",
+        text: "Bildebevis nummer 2, i tilfelle noen skulle være i tvil.",
+        img: "img/02-espen-trening-2.jpg"
+      },
+      {
+        title: "Godt du har litt hjelp 😉",
+        text:
+          "Skulle alderen en dag prøve seg, er det godt du har en litt yngre samboer som tar godt vare på deg og holder deg på rett spor 😉.",
+        img: "img/03-deg-og-espen.jpg"
+      },
+      {
+        title: "Det viktigste ❤️",
+        text:
+          "Du er en utrolig god og snill mann, omsorgsfull, trygg og full av varme. Jeg er så takknemlig for å få dele livet med akkurat deg ❤️",
+        img: "img/04-benk.jpg"
+      }
+    ];
+
+    const titleEl = document.getElementById("title");
+    const textEl = document.getElementById("text");
+    const imgEl = document.getElementById("img");
+    const stepsEl = document.getElementById("steps");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    const start = document.getElementById("start");
+    const startBtn = document.getElementById("startBtn");
+
+    const reveal = document.getElementById("reveal");
+    const revealText = document.getElementById("revealText");
+    const revealSub = document.getElementById("revealSub");
+
+    let idx = 0;
+
+    function render(){
+      const s = slides[idx];
+      titleEl.textContent = s.title;
+      textEl.textContent = s.text;
+      imgEl.src = s.img;
+      stepsEl.textContent = `${idx + 1} / ${slides.length}`;
+
+      prevBtn.classList.toggle("disabled", idx === 0);
+      nextBtn.textContent = (idx === slides.length - 1) ? "Avslør gaven" : "Neste";
+    }
+
+    // Lett konfetti (for ikke å lagge)
+    const confettiWrap = document.getElementById("confetti");
+    function spawnConfetti(count, speedMin, speedMax){
+      const colors = ["#e5162b", "#ffffff", "#1d4ed8"];
+      const w = window.innerWidth;
+
+      for(let i=0;i<count;i++){
+        const p = document.createElement("i");
+        const left = Math.random() * w;
+        const dur = (Math.random() * (speedMax - speedMin) + speedMin).toFixed(2);
+        const delay = (Math.random() * 0.6).toFixed(2);
+        const color = colors[Math.floor(Math.random()*colors.length)];
+
+        p.style.left = left + "px";
+        p.style.background = color;
+        p.style.animationDuration = dur + "s";
+        p.style.animationDelay = delay + "s";
+        p.style.opacity = (0.6 + Math.random()*0.4).toFixed(2);
+        p.style.transform = `rotate(${Math.random()*180}deg)`;
+
+        confettiWrap.appendChild(p);
+
+        // rydder opp
+        setTimeout(()=> p.remove(), (parseFloat(dur) + parseFloat(delay) + 0.2) * 1000);
+      }
+    }
+
+    function showGiftReveal(){
+      // “Film”-sekvens + mer konfetti
+      reveal.classList.add("show");
+
+      // Kjør et par bølger konfetti
+      spawnConfetti(22, 2.6, 3.6);
+      setTimeout(()=>spawnConfetti(22, 2.4, 3.4), 350);
+      setTimeout(()=>spawnConfetti(22, 2.4, 3.2), 700);
+
+      // Endre teksten litt for mer “punch”
+      revealText.textContent = "Gaven avsløres";
+      revealSub.textContent = "Norges nye landslagsdrakt til fotball-VM 🇳🇴";
+
+      // Skjul reveal etter litt
+      setTimeout(()=>{
+        reveal.classList.remove("show");
+        // Her kan du evt sende dem videre til en ny side eller vise ekstra info
+      }, 2600);
+    }
+
+    prevBtn.addEventListener("click", ()=>{
+      if(idx === 0) return;
+      idx--;
+      render();
+    });
+
+    nextBtn.addEventListener("click", ()=>{
+      if(idx < slides.length - 1){
+        idx++;
+        render();
+      } else {
+        showGiftReveal();
+      }
+    });
+
+    // Start
+    startBtn.addEventListener("click", ()=>{
+      start.style.display = "none";
+      // litt rolig konfetti når siden starter
+      spawnConfetti(10, 3.2, 4.2);
+      render();
+    });
+
+    // preload bilder (fjerner “loading-blink”)
+    slides.forEach(s => { const im = new Image(); im.src = s.img; });
+
+    // init
+    render();
+  </script>
+</body>
+</html>
